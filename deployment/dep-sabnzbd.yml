@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sabnzbd
+  namespace: steenkamps
+spec:
+  selector:
+    matchLabels:
+      app: sabnzbd
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sabnzbd
+    spec:
+      containers:
+      - name: sabnzbd
+        image: linuxserver/sabnzbd
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: complete
+          mountPath: /downloads
+        - name: incomplete
+          mountPath: /incomplete-downloads
+      volumes:
+      - name: config
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/sabnzbd/sabnzbd_config
+      - name: complete
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/sabnzbd/complete
+      - name: incomplete
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/sabnzbd/incomplete                    

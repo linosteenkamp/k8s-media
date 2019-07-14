@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: sickchill
+spec:
+  selector:
+    app: sickchill
+  ports:
+  - protocol: TCP
+    port: 8081

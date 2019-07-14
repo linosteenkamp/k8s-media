@@ -1,0 +1,21 @@
+  apiVersion: extensions/v1beta1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    name: sabnzbd
+    namespace: steenkamps
+  spec:
+    rules:
+      - host: sabnzbd.steenkamps.org
+        http:
+          paths:
+            - backend:
+                serviceName: sabnzbd
+                servicePort: 8080
+              path: /
+    tls:
+    - hosts:
+      - sabnzbd.steenkamps.org
+      secretName: letsencrypt-prod

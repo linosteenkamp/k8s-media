@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sickchill
+  namespace: steenkamps
+spec:
+  selector:
+    matchLabels:
+      app: sickchill
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sickchill
+    spec:
+      containers:
+      - name: sickchill
+        image: linuxserver/sickchill
+        imagePullPolicy: Always
+        env:
+        - name: PUID
+          value: "816"
+        - name: PGID
+          value: "816"
+        - name: TZ
+          value: "Africa/Johannesburg"
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: complete
+          mountPath: /downloads
+        - name: incomplete
+          mountPath: /tv
+      volumes:
+      - name: config
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/sabnzbd/sickchill_config
+      - name: complete
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/sabnzbd/complete
+      - name: series
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/Series                    

@@ -1,0 +1,21 @@
+  apiVersion: extensions/v1beta1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    name: sickchill
+    namespace: steenkamps
+  spec:
+    rules:
+      - host: sickchill.steenkamps.org
+        http:
+          paths:
+            - backend:
+                serviceName: sickchill
+                servicePort: 8081
+              path: /
+    tls:
+    - hosts:
+      - sickchill.steenkamps.org
+      secretName: letsencrypt-prod
