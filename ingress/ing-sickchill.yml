@@ -14,7 +14,7 @@
             - backend:
                 serviceName: sickchill
                 servicePort: 8081
-              path: /
+              path: /home/
       - host: sabnzbd.steenkamps.org
         http:
           paths:
