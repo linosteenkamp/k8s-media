@@ -15,7 +15,15 @@
                 serviceName: sickchill
                 servicePort: 8081
               path: /
+      - host: sabnzbd.steenkamps.org
+        http:
+          paths:
+            - backend:
+                serviceName: sabnzbd
+                servicePort: 8080
+              path: /              
     tls:
     - hosts:
       - sickchill.steenkamps.org
+      - sabnzbd.steenkamps.org
       secretName: letsencrypt-prod
