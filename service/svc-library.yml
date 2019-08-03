@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: library
+  namespace: steenkamps
+spec:
+  selector:
+    app: library
+  ports:
+  - protocol: TCP
+    port: 5299
