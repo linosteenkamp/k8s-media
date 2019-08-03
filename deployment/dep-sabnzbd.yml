@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sabnzbd
-  namespace: media
+  namespace: steenkamps
 spec:
   selector:
     matchLabels:

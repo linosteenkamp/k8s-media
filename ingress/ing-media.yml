@@ -5,7 +5,7 @@
       kubernetes.io/ingress.class: nginx
       certmanager.k8s.io/cluster-issuer: letsencrypt-prod
     name: sickchill
-    namespace: media
+    namespace: steenkamps
   spec:
     rules:
       - host: sickchill.steenkamps.org
