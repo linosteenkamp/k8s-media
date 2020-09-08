@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  namespace: steenkamps
+spec:
+  selector:
+    matchLabels:
+      app: sonarr
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+      - name: sonarr
+        image: linuxserver/sonarr
+        imagePullPolicy: Always
+        env:
+        - name: PUID
+          value: "816"
+        - name: PGID
+          value: "816"
+        - name: TZ
+          value: "Africa/Johannesburg"
+        - name: VERSION
+          value: "latest"
+        - name: UMASK_SET
+          value: "022"
+        - name: PLEX_CLAIM
+          value: "claim-R-vi57Dcwx8aPxBBYMg8"
+
+        ports:
+          - name: pms
+            containerPort: 8989
+
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: complete
+          mountPath: /downloads
+        - name: tv
+          mountPath: /tv
+        - name: movies
+          mountPath: /movies
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: plex
+      - name: tv
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/tv
+      - name: movies
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/movies
+      - name: complete
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/sabnzbd/complete          
