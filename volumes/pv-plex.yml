@@ -8,10 +8,8 @@ spec:
   capacity:
     storage: 20Gi
   accessModes:
-    # the volume can be mounted as read-write by many nodes
-    - ReadWriteMany
-    # Allow WaitForFirstConsumer
-    persistentVolumeReclaimPolicy: Retain
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
     path: /data
