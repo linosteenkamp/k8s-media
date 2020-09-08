@@ -1,20 +1,20 @@
-# plex.persistentvolume
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: plex-config
-spec:
-  accessModes:
-  - ReadWriteMany
-  capacity:
-    storage: 20Gi
-  hostPath:
-    path: "/data/plex-config"
-    type: ""
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: microk8s-hostpath
-  volumeMode: Filesystem
----
+# # plex.persistentvolume
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: plex-config
+# spec:
+#   accessModes:
+#   - ReadWriteMany
+#   capacity:
+#     storage: 20Gi
+#   hostPath:
+#     path: "/data/plex-config"
+#     type: ""
+#   persistentVolumeReclaimPolicy: Delete
+#   storageClassName: microk8s-hostpath
+#   volumeMode: Filesystem
+# ---
 # plex.persistentvolumeclaim
 apiVersion: v1
 kind: PersistentVolumeClaim
