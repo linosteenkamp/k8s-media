@@ -29,7 +29,7 @@ spec:
         - name: UMASK_SET
           value: "022"
         - name: PLEX_CLAIM
-          value: "claim-R-vi57Dcwx8aPxBBYMg8"
+          value: "claim-vEJvq4zidf19Mr47s9_H"
 
         ports:
           - name: pms
