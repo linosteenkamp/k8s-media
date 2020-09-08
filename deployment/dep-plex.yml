@@ -47,7 +47,7 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim:
-          claimName: plex
+          claimName: plex-config
       - name: tv
         nfs: 
           server: 192.168.1.100
