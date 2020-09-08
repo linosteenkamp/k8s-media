@@ -40,8 +40,10 @@ spec:
           mountPath: /config
         - name: complete
           mountPath: /downloads
-        - name: series
+        - name: tv
           mountPath: /tv
+        - name: movies
+          mountPath: /movies
       volumes:
       - name: config
         persistentVolumeClaim:
@@ -54,3 +56,7 @@ spec:
         nfs: 
           server: 192.168.1.100
           path: /mnt/VOL1/movies
+      - name: complete
+        nfs: 
+          server: 192.168.1.100
+          path: /mnt/VOL1/sabnzbd/complete          
