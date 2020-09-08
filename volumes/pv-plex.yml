@@ -15,14 +15,14 @@ spec:
   storageClassName: local-storage
   local:
     path: /data
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - ubuntu
+  # nodeAffinity:
+  #   required:
+  #     nodeSelectorTerms:
+  #       - matchExpressions:
+  #           - key: kubernetes.io/hostname
+  #             operator: In
+  #             values:
+  #               - ubuntu
 # ---
 # plex.persistentvolumeclaim
 apiVersion: v1
