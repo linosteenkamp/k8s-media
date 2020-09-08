@@ -1,6 +1,7 @@
 # plex.persistentvolume
 apiVersion: v1
 kind: PersistentVolume
+metadata:
   name: plex-config
 spec:
   accessModes:
