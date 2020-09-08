@@ -1,31 +1,14 @@
-# media.persistentvolume
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: "media-ssd"
-  labels:
-    type: "local"
-spec:
-  storageClassName: "manual"
-  capacity:
-    storage: "200Gi"
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/data"
----
 # media.persistentvolumeclaim
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: "steenkamps"
-  name: "media-ssd"
+  name: "plex"
 spec:
-  storageClassName: "manual"
+  storageClassName: "microk8s-hostpath"
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: "200Gi"
+      storage: 20Gi
 ---
