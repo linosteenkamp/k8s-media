@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /data
+    path: /data/plex-config
   nodeAffinity:
     required:
       nodeSelectorTerms:
