@@ -17,6 +17,19 @@ spec:
       - name: sabnzbd
         image: linuxserver/sabnzbd
         imagePullPolicy: Always
+        env:
+        - name: PUID
+          value: "816"
+        - name: PGID
+          value: "816"
+        - name: TZ
+          value: "Africa/Johannesburg"
+        - name: VERSION
+          value: "latest"
+        - name: UMASK_SET
+          value: "022"
+        - name: PLEX_CLAIM
+          value: "claim-R-vi57Dcwx8aPxBBYMg8"
         ports:
         - containerPort: 8080
         volumeMounts:
