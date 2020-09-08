@@ -1,19 +1,28 @@
 # # plex.persistentvolume
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: plex-config
-# spec:
-#   accessModes:
-#   - ReadWriteMany
-#   capacity:
-#     storage: 20Gi
-#   hostPath:
-#     path: "/data/plex-config"
-#     type: ""
-#   persistentVolumeReclaimPolicy: Delete
-#   storageClassName: microk8s-hostpath
-#   volumeMode: Filesystem
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-config
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    # the volume can be mounted as read-write by many nodes
+    - ReadWriteMany
+    # Allow WaitForFirstConsumer
+  storageClassName: local-storage
+  local:
+    path: /data
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - ubuntu
 # ---
 # plex.persistentvolumeclaim
 apiVersion: v1
@@ -23,8 +32,6 @@ metadata:
   name: plex-config
 spec:
   storageClassName: local-storage
-  local:
-    path: /data
   accessModes:
     - ReadWriteMany
   resources:
