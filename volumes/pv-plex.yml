@@ -1,4 +1,5 @@
-# # plex.persistentvolume
+---
+# plex.persistentvolume
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -23,7 +24,7 @@ spec:
   #             operator: In
   #             values:
   #               - ubuntu
-# ---
+---
 # plex.persistentvolumeclaim
 apiVersion: v1
 kind: PersistentVolumeClaim
