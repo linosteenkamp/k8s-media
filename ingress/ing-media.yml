@@ -3,17 +3,17 @@
   metadata:
     annotations:
       kubernetes.io/ingress.class: nginx
-      certmanager.k8s.io/cluster-issuer: letsencrypt-prod
-    name: sickchill
+      certmanager.k8s.io/cluster-issuer: letsencrypt-staging
+    name: media
     namespace: media
   spec:
     rules:
-      - host: sickchill.steenkamps.org
+      - host: sonarr.steenkamps.org
         http:
           paths:
             - backend:
-                serviceName: sickchill
-                servicePort: 8081
+                serviceName: sonarr
+                servicePort: 8989
               path: /
       - host: sabnzbd.steenkamps.org
         http:
@@ -31,7 +31,7 @@
               path: /              
     tls:
     - hosts:
-      - sickchill.steenkamps.org
+      - sonarr.steenkamps.org
       - sabnzbd.steenkamps.org
       - library.steenkamps.org
-      secretName: letsencrypt-prod
+      secretName: default-tls-secret
