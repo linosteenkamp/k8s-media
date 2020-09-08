@@ -9,7 +9,7 @@ spec:
   capacity:
     storage: 20Gi
   hostPath:
-    path: ""
+    path: "/data/plex-config"
     type: ""
   persistentVolumeReclaimPolicy: Delete
   storageClassName: microk8s-hostpath
