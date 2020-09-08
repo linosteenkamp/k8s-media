@@ -22,7 +22,9 @@ metadata:
   namespace: steenkamps
   name: plex-config
 spec:
-  storageClassName: microk8s-hostpath
+  storageClassName: local-storage
+  local:
+    path: /data
   accessModes:
     - ReadWriteMany
   resources:
