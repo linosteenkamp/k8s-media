@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: library
+  namespace: steenkamps
+spec:
+  type: LoadBalancer
+  selector:
+    app: plex
+  ports:
+    - name: pms
+      port: 32400
+      protocol: TCP
+      targetPort: pms

@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sickchill
+  name: plex
   namespace: steenkamps
 spec:
   selector:
     matchLabels:
-      app: sickchill
+      app: plex
   replicas: 1
   template:
     metadata:
       labels:
-        app: sickchill
+        app: plex
     spec:
       containers:
-      - name: sickchill
-        image: linuxserver/sickchill
+      - name: plex
+        image: linuxserver/plex
         imagePullPolicy: Always
         env:
         - name: PUID
@@ -24,8 +24,17 @@ spec:
           value: "816"
         - name: TZ
           value: "Africa/Johannesburg"
+        - name: VERSION
+          value: "latest"
+        - name: UMASK_SET
+          value: "022"
+        - name: PLEX_CLAIM
+          value: "claim-R-vi57Dcwx8aPxBBYMg8"
+
         ports:
-        - containerPort: 8081
+          - name: pms
+            containerPort: 32400
+
         volumeMounts:
         - name: config
           mountPath: /config
@@ -35,14 +44,13 @@ spec:
           mountPath: /tv
       volumes:
       - name: config
+        persistentVolumeClaim:
+          claimName: plex
+      - name: tv
         nfs: 
           server: 192.168.1.100
-          path: /mnt/VOL1/sabnzbd/sickchill_config
-      - name: complete
+          path: /mnt/VOL1/sabnzbd/tv
+      - name: movies
         nfs: 
           server: 192.168.1.100
-          path: /mnt/VOL1/sabnzbd/complete
-      - name: series
-        nfs: 
-          server: 192.168.1.100
-          path: /mnt/VOL1/tv
+          path: /mnt/VOL1/movies
