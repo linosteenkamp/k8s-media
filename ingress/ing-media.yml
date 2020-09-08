@@ -11,24 +11,33 @@
       - host: sonarr.steenkamps.org
         http:
           paths:
-            - backend:
-                serviceName: sonarr
-                servicePort: 8989
+            - pathType: Prefix
               path: /
+              backend:
+                service:
+                  name: sonarr
+                  port: 
+                    number: 8989
       - host: sabnzbd.steenkamps.org
         http:
           paths:
-            - backend:
-                serviceName: sabnzbd
-                servicePort: 8080
+            - pathType: Prefix
               path: /              
+              backend:
+                service:
+                  name: sabnzbd
+                  port: 
+                    number: 8080
       - host: library.steenkamps.org
         http:
           paths:
-            - backend:
-                serviceName: library
-                servicePort: 5299
+            - pathType: Prefix
               path: /              
+              backend:
+                service:
+                  name: library
+                  port: 
+                    number: 5299
     tls:
     - hosts:
       - sonarr.steenkamps.org
