@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: library
-        image: linuxserver/lazylibrarian
+        image: linuxserver/lazylibrarian:latest
         imagePullPolicy: Always
         env:
         - name: PUID
