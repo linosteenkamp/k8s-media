@@ -18,6 +18,16 @@
                   name: sonarr
                   port: 
                     number: 8989
+      - host: radarr.steenkamps.org
+        http:
+          paths:
+            - pathType: Prefix
+              path: /
+              backend:
+                service:
+                  name: radarr
+                  port: 
+                    number: 7878
       - host: sabnzbd.steenkamps.org
         http:
           paths:
