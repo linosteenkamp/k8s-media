@@ -33,12 +33,12 @@ spec:
         ports:
         - containerPort: 8080
         volumeMounts:
-        - name: config
-          mountPath: /sabnzbd/config
-        - name: complete
-          mountPath: sabnzbd/complete
-        - name: incomplete
-          mountPath: sabnzbd/incomplete
+        - name: sabnzbd
+          mountPath: /sabnzbd
+        # - name: complete
+        #   mountPath: sabnzbd/complete
+        # - name: incomplete
+        #   mountPath: sabnzbd/incomplete
       volumes:
       - name: sabnzbd
         persistentVolumeClaim:
