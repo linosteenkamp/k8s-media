@@ -34,21 +34,24 @@ spec:
         - containerPort: 8080
         volumeMounts:
         - name: config
-          mountPath: /config
+          mountPath: /sabnzbd/config
         - name: complete
-          mountPath: /downloads
+          mountPath: sabnzbd/complete
         - name: incomplete
-          mountPath: /incomplete-downloads
+          mountPath: sabnzbd/incomplete
       volumes:
-      - name: config
-        nfs: 
-          server: 192.168.1.100
-          path: /mnt/VOL1/sabnzbd/sabnzbd_config
-      - name: complete
-        nfs: 
-          server: 192.168.1.100
-          path: /mnt/VOL1/sabnzbd/complete
-      - name: incomplete
-        nfs: 
-          server: 192.168.1.100
-          path: /mnt/VOL1/sabnzbd/incomplete                    
+      - name: sabnzbd
+        persistentVolumeClaim:
+          claimName: sabnzbd        
+      # - name: config
+      #   nfs: 
+      #     server: 192.168.1.100
+      #     path: /mnt/VOL1/sabnzbd/sabnzbd_config
+      # - name: complete
+      #   nfs: 
+      #     server: 192.168.1.100
+      #     path: /mnt/VOL1/sabnzbd/complete
+      # - name: incomplete
+      #   nfs: 
+      #     server: 192.168.1.100
+      #     path: /mnt/VOL1/sabnzbd/incomplete                    
