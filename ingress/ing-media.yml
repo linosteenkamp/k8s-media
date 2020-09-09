@@ -51,6 +51,7 @@
     tls:
     - hosts:
       - sonarr.steenkamps.org
+      - radarr.steenkamps.org
       - sabnzbd.steenkamps.org
       - library.steenkamps.org
       secretName: prod-tls-secret
