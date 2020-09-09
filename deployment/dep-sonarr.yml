@@ -57,6 +57,5 @@ spec:
           server: 192.168.1.100
           path: /mnt/VOL1/movies
       - name: complete
-        nfs: 
-          server: 192.168.1.100
-          path: /mnt/VOL1/sabnzbd/complete          
+        persistentVolumeClaim:
+          claimName: sabnzbd-complete

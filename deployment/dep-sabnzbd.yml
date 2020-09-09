@@ -42,7 +42,11 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim:
-          claimName: sabnzbd        
+          claimName: sabnzbd    
+      - name: complete
+        persistentVolumeClaim:
+          claimName: sabnzbd-complete
+    
       # - name: config
       #   nfs: 
       #     server: 192.168.1.100
