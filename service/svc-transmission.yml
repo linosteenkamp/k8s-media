@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  selector:
+    app: radarr
+  ports:
+  - name: http
+    containerPort: 9091
+    protocol: TCP
+  - name: torrent-tcp
+    containerPort: 51413
+    protocol: TCP
+  - name: torrent-udp
+    containerPort: 51413
+    protocol: UDP

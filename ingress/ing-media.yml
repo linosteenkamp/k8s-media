@@ -48,10 +48,21 @@
                   name: library
                   port: 
                     number: 5299
+      - host: transmission.steenkamps.org
+        http:
+          paths:
+            - pathType: Prefix
+              path: /              
+              backend:
+                service:
+                  name: transmission
+                  port: 
+                    number: 9091
     tls:
     - hosts:
       - sonarr.steenkamps.org
       - radarr.steenkamps.org
       - sabnzbd.steenkamps.org
       - library.steenkamps.org
+      - transmission.steenkamps.org
       secretName: prod-tls-secret
