@@ -65,7 +65,7 @@
               path: /              
               backend:
                 service:
-                  name: transmission
+                  name: jacket
                   port: 
                     number: 9117
     tls:
