@@ -1,0 +1,37 @@
+# drop-folder.persistentvolume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: drop-folder
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /data/drop-folder
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - ubuntu
+---
+# drop-folder.persistentvolumeclaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: media
+  name: drop-folder
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
