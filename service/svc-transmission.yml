@@ -1,11 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: radarr
+  name: transmission
   namespace: media
 spec:
   selector:
-    app: radarr
+    app: transmission
   ports:
   - name: http
     port: 9091
