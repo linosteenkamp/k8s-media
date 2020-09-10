@@ -58,6 +58,16 @@
                   name: transmission
                   port: 
                     number: 9091
+      - host: jacket.steenkamps.org
+        http:
+          paths:
+            - pathType: Prefix
+              path: /              
+              backend:
+                service:
+                  name: transmission
+                  port: 
+                    number: 9117
     tls:
     - hosts:
       - sonarr.steenkamps.org
@@ -65,4 +75,5 @@
       - sabnzbd.steenkamps.org
       - library.steenkamps.org
       - transmission.steenkamps.org
+      - jacket.steenkamps.org
       secretName: prod-tls-secret

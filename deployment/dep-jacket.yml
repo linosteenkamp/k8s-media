@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jacket
+  namespace: media
+spec:
+  selector:
+    matchLabels:
+      app: jacket
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jacket
+    spec:
+      containers:
+      - name: jacket
+        image: linuxserver/jacket
+        imagePullPolicy: Always
+        env:
+        - name: PUID
+          value: "816"
+        - name: PGID
+          value: "816"
+        - name: TZ
+          value: "Africa/Johannesburg"
+        - name: AUTO_UPDATE
+          value: "true"
+        - name: UMASK_SET
+          value: "022"
+        - name: PLEX_CLAIM
+          value: "claim-R-vi57Dcwx8aPxBBYMg8"
+
+        ports:
+          - name: pms
+            containerPort: 9117
+
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: watch-folder
+          mountPath: /watch
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: jacket-config
+      - name: watch-folder
+        persistentVolumeClaim:
+          claimName: watch-folder

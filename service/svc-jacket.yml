@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: jacket
+  namespace: media
+spec:
+  selector:
+    app: jacket
+  ports:
+  - protocol: TCP
+    port: 9117
