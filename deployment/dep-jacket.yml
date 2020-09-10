@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: jacket
-        image: linuxserver/jacket
+        image: linuxserver/jackett
         imagePullPolicy: Always
         env:
         - name: PUID
