@@ -37,8 +37,8 @@ spec:
           mountPath: /config
         - name: complete
           mountPath: complete
-        # - name: incomplete
-        #   mountPath: sabnzbd/incomplete
+        - name: watch-folder
+          mountPath: /watch
       volumes:
       - name: config
         persistentVolumeClaim:
@@ -46,16 +46,6 @@ spec:
       - name: complete
         persistentVolumeClaim:
           claimName: sabnzbd-complete
-
-      # - name: config
-      #   nfs: 
-      #     server: 192.168.1.100
-      #     path: /mnt/VOL1/sabnzbd/sabnzbd_config
-      # - name: complete
-      #   nfs: 
-      #     server: 192.168.1.100
-      #     path: /mnt/VOL1/sabnzbd/complete
-      # - name: incomplete
-      #   nfs: 
-      #     server: 192.168.1.100
-      #     path: /mnt/VOL1/sabnzbd/incomplete                    
+      - name: watch-folder
+        persistentVolumeClaim:
+          claimName: watch-folder

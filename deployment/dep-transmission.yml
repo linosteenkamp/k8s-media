@@ -45,6 +45,8 @@ spec:
           mountPath: /config
         - name: complete
           mountPath: /downloads
+        - name: watch-folder
+          mountPath: /watch
       volumes:
       - name: config
         persistentVolumeClaim:
@@ -52,3 +54,6 @@ spec:
       - name: complete
         persistentVolumeClaim:
           claimName: sabnzbd-complete
+      - name: watch-folder
+        persistentVolumeClaim:
+          claimName: watch-folder

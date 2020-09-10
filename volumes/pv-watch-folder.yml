@@ -1,8 +1,8 @@
-# drop-folder.persistentvolume
+# watch-folder.persistentvolume
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: drop-folder
+  name: watch-folder
 spec:
   capacity:
     storage: 1Gi
@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /data/drop-folder
+    path: /data/watch-folder
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -21,12 +21,12 @@ spec:
           values:
           - ubuntu
 ---
-# drop-folder.persistentvolumeclaim
+# watch-folder.persistentvolumeclaim
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: media
-  name: drop-folder
+  name: watch-folder
 spec:
   storageClassName: local-storage
   accessModes:
