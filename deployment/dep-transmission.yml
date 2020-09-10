@@ -45,10 +45,6 @@ spec:
           mountPath: /config
         - name: complete
           mountPath: /downloads
-        - name: tv
-          mountPath: /tv
-        - name: movies
-          mountPath: /movies
       volumes:
       - name: config
         persistentVolumeClaim:
