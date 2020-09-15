@@ -29,8 +29,7 @@ spec:
         - name: DRONE_SERVER_PROTO
           value: "https"
         ports:
-          name: drone
-          containerPort: 80
+        - containerPort: 80
         volumeMounts:
         - name: data
           mountPath: /var/lib/drone
