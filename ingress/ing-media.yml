@@ -68,6 +68,16 @@
                   name: jacket
                   port: 
                     number: 9117
+      - host: drone.steenkamps.org
+        http:
+          paths:
+            - pathType: Prefix
+              path: /              
+              backend:
+                service:
+                  name: drone
+                  port: 
+                    number: 80
     tls:
     - hosts:
       - sonarr.steenkamps.org
@@ -76,4 +86,5 @@
       - library.steenkamps.org
       - transmission.steenkamps.org
       - jacket.steenkamps.org
+      - drone.steenkamps.org
       secretName: prod-tls-secret
