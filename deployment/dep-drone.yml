@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drone
+  namespace: media
+spec:
+  selector:
+    matchLabels:
+      app: drone
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: drone
+    spec:
+      containers:
+      - name: drone
+        image: drone/drone
+        imagePullPolicy: Always
+        env:
+        - name: DRONE_GITHUB_CLIENT_ID
+          value: "964ce41c02b6b32e4f2a"
+        - name: DRONE_GITHUB_CLIENT_SECRET
+          value: "4108207300f5f3ec2c70c6c71e560d80ea1edbaf"
+        - name: DRONE_RPC_SECRET
+          value: "719c08196b4b8caa6000a32b67eeffaf"
+        - name: DRONE_SERVER_HOST
+          value: "drone.steenkamps.org"
+        - name: DRONE_SERVER_PROTO
+          value: "https"
+
+        ports:
+            containerPort: 80
+
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/drone
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: drone

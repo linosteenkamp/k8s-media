@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: drone
+  namespace: media
+spec:
+  selector:
+    app: drone
+  ports:
+  - protocol: TCP
+    port: 80
