@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: drone
+  name: drone-runner
   namespace: media
   labels:
     app.kubernetes.io/name: drone
@@ -16,14 +16,14 @@ spec:
         app.kubernetes.io/name: drone
     spec:
       containers:
-      - name: drone-runner
+      - name: runner
         image: drone/drone-runner-kube:latest
         ports:
         - containerPort: 3000
         env:
         - name: DRONE_RPC_HOST
-          value: drone.steenkamps.org
+          value: "drone.steenkamps.org"
         - name: DRONE_RPC_PROTO
-          value: https
+          value: "https"
         - name: DRONE_RPC_SECRET
           value: "719c08196b4b8caa6000a32b67eeffaf"
