@@ -7,5 +7,5 @@ spec:
   selector:
     app: transmission
   ports:
+  - protocol: TCP
     port: 9091
-    protocol: TCP
