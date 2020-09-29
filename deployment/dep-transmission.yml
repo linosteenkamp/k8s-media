@@ -4,49 +4,68 @@ metadata:
   name: transmission
   namespace: media
 spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
   selector:
     matchLabels:
       app: transmission
-  replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         app: transmission
     spec:
       containers:
-      - name: transmission
-        image: linuxserver/transmission:latest
+      - envFrom:
+        - configMapRef:
+            name: transmission-config
+            optional: false
+        - secretRef:
+            name: vpn-creds
+            optional: false
+        image: haugene/transmission-openvpn
         imagePullPolicy: Always
-        env:
-        - name: PUID
-          value: "816"
-        - name: PGID
-          value: "816"
-        - name: TZ
-          value: "Africa/Johannesburg"
-        - name: USER
-          value: "lino"
-        - name: PASS
-          value: "3klop3"
-
-        ports:
-          - name: http
-            containerPort: 9091
-            protocol: TCP
-          - name: torrent-tcp
-            containerPort: 51413
-            protocol: TCP
-          - name: torrent-udp
-            containerPort: 51413
-            protocol: UDP
-
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 2
+          successThreshold: 1
+          tcpSocket:
+            port: 9091
+          timeoutSeconds: 2
+        name: transmission
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 2
+          successThreshold: 2
+          tcpSocket:
+            port: 9091
+          timeoutSeconds: 2
+        resources:
+          limits:
+            memory: 2000Mi
+        securityContext:
+          allowPrivilegeEscalation: true
+          capabilities:
+            add:
+            - NET_ADMIN
+          privileged: true
         volumeMounts:
         - name: config
-          mountPath: /config
+          mountPath: /data
         - name: complete
           mountPath: /complete
         - name: watch-folder
           mountPath: /watch
+        - name: tunnel
+          mountPath: /dev/net/tun
+        - name: localtime
+          mountPath: /etc/localtime
+          readOnly: true
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
       volumes:
       - name: config
         persistentVolumeClaim:
@@ -57,3 +76,11 @@ spec:
       - name: watch-folder
         persistentVolumeClaim:
           claimName: watch-folder
+      - hostPath:
+          path: /dev/net/tun
+          type: ""
+        name: tunnel
+      - hostPath:
+          path: /etc/localtime
+          type: ""
+        name: localtime
