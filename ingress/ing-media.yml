@@ -52,7 +52,7 @@
         http:
           paths:
             - pathType: Prefix
-            #   path: /              
+              path: /transmission/web/       
               backend:
                 service:
                   name: transmission
