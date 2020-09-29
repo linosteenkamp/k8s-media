@@ -52,6 +52,11 @@ spec:
             add:
             - NET_ADMIN
           privileged: true
+
+        ports:
+          - name: transmission
+            containerPort: 9091
+
         volumeMounts:
         - name: config
           mountPath: /data
