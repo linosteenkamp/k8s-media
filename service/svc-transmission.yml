@@ -7,8 +7,5 @@ spec:
   selector:
     app: transmission
   ports:
-  - name: http
     port: 9091
     protocol: TCP
-    targetPort: 9091
-  sessionAffinity: None
