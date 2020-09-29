@@ -54,8 +54,7 @@ spec:
           privileged: true
 
         ports:
-          - name: transmission
-            containerPort: 9091
+        - containerPort: 9091
 
         volumeMounts:
         - name: config
