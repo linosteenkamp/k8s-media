@@ -25,24 +25,24 @@ spec:
             name: vpn-creds
             optional: false
         image: haugene/transmission-openvpn
-        imagePullPolicy: Always
-        livenessProbe:
-          failureThreshold: 3
-          initialDelaySeconds: 10
-          periodSeconds: 2
-          successThreshold: 1
-          tcpSocket:
-            port: 9091
-          timeoutSeconds: 2
         name: transmission
-        readinessProbe:
-          failureThreshold: 3
-          initialDelaySeconds: 10
-          periodSeconds: 2
-          successThreshold: 2
-          tcpSocket:
-            port: 9091
-          timeoutSeconds: 2
+        imagePullPolicy: Always
+        # livenessProbe:
+        #   failureThreshold: 3
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 2
+        #   successThreshold: 1
+        #   tcpSocket:
+        #     port: 9091
+        #   timeoutSeconds: 2
+        # readinessProbe:
+        #   failureThreshold: 3
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 2
+        #   successThreshold: 2
+        #   tcpSocket:
+        #     port: 9091
+        #   timeoutSeconds: 2
         resources:
           limits:
             memory: 2000Mi
@@ -64,8 +64,8 @@ spec:
         - name: localtime
           mountPath: /etc/localtime
           readOnly: true
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
+      # restartPolicy: Always
+      # terminationGracePeriodSeconds: 30
       volumes:
       - name: config
         persistentVolumeClaim:
