@@ -51,9 +51,9 @@
       - host: transmission.steenkamps.org
         http:
           paths:
-            - pathType: Prefix
-              path: /              
-              backend:
+            # - pathType: Prefix
+            #   path: /              
+            - backend:
                 service:
                   name: transmission
                   port: 
