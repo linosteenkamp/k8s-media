@@ -208,3 +208,85 @@ spec:
   resources:
     requests:
       storage: 1Gi
+
+---
+---
+# sabnzbd-complete.persistentvolume
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: tv
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 6000Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: /data/media/tv
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
+---
+# sabnzbd-complete.persistentvolumeclaim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: media
+  name: tv
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 6000Gi
+
+---
+# watch-folder.persistentvolume
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: movies
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 6000Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: /data/media/movies
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
+  
+---
+# watch-folder.persistentvolumeclaim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: media
+  name: movies
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 6000Gi

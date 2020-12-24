@@ -49,13 +49,11 @@ spec:
         persistentVolumeClaim:
           claimName: sonarr-config
       - name: tv
-        nfs: 
-          server: 192.168.1.100
-          path: /mnt/VOL1/tv
+        persistentVolumeClaim:
+          claimName: tv
       - name: movies
-        nfs: 
-          server: 192.168.1.100
-          path: /mnt/VOL1/movies
+        persistentVolumeClaim:
+          claimName: movies
       - name: complete
         persistentVolumeClaim:
           claimName: sabnzbd-complete
