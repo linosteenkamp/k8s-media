@@ -104,6 +104,14 @@ spec:
   storageClassName: local-storage
   hostPath:
     path: /data/sabnzbd
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
   
 ---
 # sabnzbd.persistentvolumeclaim
@@ -144,7 +152,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - ubuntu
+          - app
 ---
 # sabnzbd-complete.persistentvolumeclaim
 kind: PersistentVolumeClaim
@@ -177,6 +185,14 @@ spec:
   storageClassName: local-storage
   hostPath:
     path: /data/watch-folder
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
   
 ---
 # watch-folder.persistentvolumeclaim

@@ -113,6 +113,15 @@ spec:
   storageClassName: local-storage
   hostPath:
     path: /data/sonarr-config
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
+
   
 ---
 # sonarr.persistentvolumeclaim

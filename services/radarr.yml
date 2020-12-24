@@ -111,6 +111,14 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: /data/radarr-config
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
   
 ---
 # radarr.persistentvolumeclaim

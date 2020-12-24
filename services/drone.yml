@@ -133,6 +133,14 @@ spec:
   storageClassName: local-storage
   hostPath:
     path: /data/drone
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
 
 ---
 # drone.persistentvolumeclaim
