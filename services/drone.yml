@@ -122,6 +122,8 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: drone
+  labels:
+    type: local
 spec:
   capacity:
     storage: 20Gi
@@ -129,16 +131,9 @@ spec:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
-  local:
+  hostPath:
     path: /data/drone
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - ubuntu
+
 ---
 # drone.persistentvolumeclaim
 kind: PersistentVolumeClaim

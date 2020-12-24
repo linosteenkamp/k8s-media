@@ -93,6 +93,8 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: sabnzbd
+  labels:
+    type: local
 spec:
   capacity:
     storage: 100Gi
@@ -100,16 +102,9 @@ spec:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
-  local:
+  hostPath:
     path: /data/sabnzbd
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - ubuntu
+  
 ---
 # sabnzbd.persistentvolumeclaim
 kind: PersistentVolumeClaim
@@ -131,6 +126,8 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: sabnzbd-complete
+  labels:
+    type: local
 spec:
   capacity:
     storage: 100Gi
@@ -138,7 +135,7 @@ spec:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
-  local:
+  hostPath:
     path: /data/sabnzbd-complete
   nodeAffinity:
     required:
@@ -169,6 +166,8 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: watch-folder
+  labels:
+    type: local
 spec:
   capacity:
     storage: 1Gi
@@ -176,17 +175,9 @@ spec:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
-  local:
+  hostPath:
     path: /data/watch-folder
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - ubuntu
-
+  
 ---
 # watch-folder.persistentvolumeclaim
 kind: PersistentVolumeClaim
