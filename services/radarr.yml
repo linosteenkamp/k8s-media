@@ -1,0 +1,133 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  selector:
+    matchLabels:
+      app: radarr
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+      - name: radarr
+        image: linuxserver/radarr:latest
+        imagePullPolicy: Always
+        env:
+        - name: PUID
+          value: "816"
+        - name: PGID
+          value: "816"
+        - name: TZ
+          value: "Africa/Johannesburg"
+        - name: VERSION
+          value: "latest"
+        - name: UMASK_SET
+          value: "022"
+
+        ports:
+          - name: pms
+            containerPort: 7878
+
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: complete
+          mountPath: /complete
+        - name: tv
+          mountPath: /tv
+        - name: movies
+          mountPath: /movies
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: radarr-config
+      - name: complete
+        persistentVolumeClaim:
+          claimName: sabnzbd-complete
+      - name: tv
+        nfs:
+          server: 192.168.1.100
+          path: /mnt/VOL1/tv
+      - name: movies
+        nfs:
+          server: 192.168.1.100
+          path: /mnt/VOL1/movies
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  selector:
+    app: radarr
+  ports:
+  - protocol: TCP
+    port: 7878
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1 
+metadata:
+annotations:
+  kubernetes.io/ingress.class: nginx
+  nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
+  nginx.ingress.kubernetes.io/proxy-read-timeout: "15"      
+name: radarr
+namespace: media
+spec:
+rules:
+  - host: radarr.steenkamps.org
+    http:
+      paths:
+        - pathType: Prefix
+          path: /              
+          backend:
+            service:
+              name: radarr
+              port: 
+                number: 5299
+
+---
+# radarr.persistentvolume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: radarr-config
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /data/radarr-config
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - ubuntu
+---
+# radarr.persistentvolumeclaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: media
+  name: radarr-config
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi

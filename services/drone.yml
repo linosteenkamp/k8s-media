@@ -1,0 +1,155 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: drone
+  name: drone
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - pods/log
+  verbs:
+  - get
+  - create
+  - delete
+  - list
+  - watch
+  - update
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: drone
+  namespace: drone
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: drone
+roleRef:
+  kind: Role
+  name: drone
+  apiGroup: rbac.authorization.k8s.io
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: drone
+  namespace: drone
+spec:
+  selector:
+    matchLabels:
+      app: drone
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: drone
+    spec:
+      containers:
+      - name: drone
+        image: drone/drone
+        imagePullPolicy: Always
+        env:
+        - name: DRONE_GITHUB_CLIENT_ID
+          value: "964ce41c02b6b32e4f2a"
+        - name: DRONE_GITHUB_CLIENT_SECRET
+          value: "4108207300f5f3ec2c70c6c71e560d80ea1edbaf"
+        - name: DRONE_RPC_SECRET
+          value: "719c08196b4b8caa6000a32b67eeffaf"
+        - name: DRONE_SERVER_HOST
+          value: "drone.steenkamps.org"
+        - name: DRONE_SERVER_PROTO
+          value: "https"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/drone
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: drone
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: drone
+  namespace: drone
+spec:
+  selector:
+    app: drone
+  ports:
+  - protocol: TCP
+    port: 80
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1 
+metadata:
+annotations:
+  kubernetes.io/ingress.class: nginx
+  nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
+  nginx.ingress.kubernetes.io/proxy-read-timeout: "15"      
+name: drone
+namespace: drone
+spec:
+rules:
+  - host: drone.steenkamps.org
+    http:
+      paths:
+        - pathType: Prefix
+          path: /              
+          backend:
+            service:
+              name: drone
+              port: 
+                number: 80
+
+---
+# drone.persistentvolume
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: drone
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /data/drone
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - ubuntu
+---
+# drone.persistentvolumeclaim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: drone
+  name: drone
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
