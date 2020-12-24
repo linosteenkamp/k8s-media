@@ -1,3 +1,0 @@
-[submodule "charts/kube-plex"]
-	path = charts/kube-plex
-	url = https://github.com/munnerz/kube-plex.git
