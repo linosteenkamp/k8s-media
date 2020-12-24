@@ -77,24 +77,24 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1 
 metadata:
-annotations:
-  kubernetes.io/ingress.class: nginx
-  nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
-  nginx.ingress.kubernetes.io/proxy-read-timeout: "15"      
-name: sonarr
-namespace: media
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "15"      
+  name: sonarr
+  namespace: media
 spec:
-rules:
-  - host: sonarr.steenkamps.org
-    http:
-      paths:
-        - pathType: Prefix
-          path: /              
-          backend:
-            service:
-              name: sonarr
-              port: 
-                number: 5299
+  rules:
+    - host: sonarr.steenkamps.org
+      http:
+        paths:
+          - pathType: Prefix
+            path: /              
+            backend:
+              service:
+                name: sonarr
+                port: 
+                  number: 5299
 
 ---
 # sonarr.persistentvolume
