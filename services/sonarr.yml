@@ -92,7 +92,7 @@ spec:
               service:
                 name: sonarr
                 port: 
-                  number: 5299
+                  number: 8989
 
 ---
 # sonarr.persistentvolume
