@@ -101,6 +101,8 @@ kind: PersistentVolumeClaim
 metadata:
   namespace: skynamo
   name: mssql-data
+  annotations:
+    volume.beta.kubernetes.io/storage-class: local-storage
 spec:
   storageClassName: local-storage
   accessModes:
