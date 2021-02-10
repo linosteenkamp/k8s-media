@@ -1,110 +1,137 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: sonarr
-#   namespace: media
-# spec:
-#   selector:
-#     matchLabels:
-#       app: sonarr
-#   replicas: 1
-#   template:
-#     metadata:
-#       labels:
-#         app: sonarr
-#     spec:
-#       containers:
-#       - name: sonarr
-#         image: linuxserver/sonarr
-#         imagePullPolicy: Always
-#         env:
-#         - name: PUID
-#           value: "816"
-#         - name: PGID
-#           value: "816"
-#         - name: TZ
-#           value: "Africa/Johannesburg"
-#         - name: VERSION
-#           value: "latest"
-#         - name: UMASK_SET
-#           value: "022"
-#         - name: PLEX_CLAIM
-#           value: "claim-R-vi57Dcwx8aPxBBYMg8"
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  selector:
+    matchLabels:
+      app: sonarr
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+      - name: sonarr
+        image: linuxserver/sonarr
+        imagePullPolicy: Always
+        env:
+        - name: PUID
+          value: "816"
+        - name: PGID
+          value: "816"
+        - name: TZ
+          value: "Africa/Johannesburg"
+        - name: VERSION
+          value: "latest"
+        - name: UMASK_SET
+          value: "022"
+        - name: PLEX_CLAIM
+          value: "claim-R-vi57Dcwx8aPxBBYMg8"
 
-#         ports:
-#           - name: pms
-#             containerPort: 8989
+        ports:
+          - name: pms
+            containerPort: 8989
 
-#         volumeMounts:
-#         - name: config
-#           mountPath: /config
-#         - name: complete
-#           mountPath: /complete
-#         - name: tv
-#           mountPath: /tv
-#         - name: movies
-#           mountPath: /movies
-#       volumes:
-#       - name: config
-#         persistentVolumeClaim:
-#           claimName: sonarr-config
-#       - name: tv
-#         persistentVolumeClaim:
-#           claimName: tv
-#       - name: movies
-#         persistentVolumeClaim:
-#           claimName: movies
-#       - name: complete
-#         persistentVolumeClaim:
-#           claimName: sabnzbd-complete
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: complete
+          mountPath: /complete
+        - name: tv
+          mountPath: /tv
+        - name: movies
+          mountPath: /movies
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: sonarr-config
+      - name: tv
+        persistentVolumeClaim:
+          claimName: tv
+      - name: movies
+        persistentVolumeClaim:
+          claimName: movies
+      - name: complete
+        persistentVolumeClaim:
+          claimName: sabnzbd-complete
 
-# ---
-# kind: Service
-# apiVersion: v1
-# metadata:
-#   name: sonarr
-#   namespace: media
-# spec:
-#   selector:
-#     app: sonarr
-#   ports:
-#   - protocol: TCP
-#     port: 8989
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  selector:
+    app: sonarr
+  ports:
+  - protocol: TCP
+    port: 8989
 
-# ---
-# kind: Ingress
-# apiVersion: networking.k8s.io/v1 
-# metadata:
-#   # annotations:
-#   #   kubernetes.io/ingress.class: nginx
-#   #   nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
-#   #   nginx.ingress.kubernetes.io/proxy-read-timeout: "15"      
-#   name: sonarr
-#   namespace: media
-# spec:
-#   rules:
-#     - host: sonarr.steenkamps.org
-#       http:
-#         paths:
-#           - pathType: Prefix
-#             path: /              
-#             backend:
-#               service:
-#                 name: sonarr
-#                 port: 
-#                   number: 8989
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1 
+metadata:
+  # annotations:
+  #   kubernetes.io/ingress.class: nginx
+  #   nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
+  #   nginx.ingress.kubernetes.io/proxy-read-timeout: "15"      
+  name: sonarr
+  namespace: media
+spec:
+  rules:
+    - host: sonarr.steenkamps.org
+      http:
+        paths:
+          - pathType: Prefix
+            path: /              
+            backend:
+              service:
+                name: sonarr
+                port: 
+                  number: 8989
+
+---
+# sonarr.persistentvolume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarr-config
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: /data/sonarr-config
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
+
   
 ---
-# mssql.persistentvolumeclaim
+# sonarr.persistentvolumeclaim
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: skynamo
-  name: mssql-data
+  namespace: media
+  name: sonarr-config
 spec:
   storageClassName: local-storage
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 20Gi
