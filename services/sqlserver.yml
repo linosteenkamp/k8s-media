@@ -93,6 +93,31 @@
 #                 name: sonarr
 #                 port: 
 #                   number: 8989
+
+# mssql.persistentvolume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mssql
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: /data/mssql
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - app
   
 ---
 # mssql.persistentvolumeclaim
