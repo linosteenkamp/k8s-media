@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mssql-deployment
+  name: mssql
   namespace: skynamo
 spec:
   selector:
@@ -19,7 +19,7 @@ spec:
         fsGroup: 10001
       containers:
       - name: mssql
-        image: mcr.microsoft.com/mssql/server:2019-latest
+        image: mcr.microsoft.com/mssql/server
         ports:
         - containerPort: 1433
         env:
@@ -28,7 +28,7 @@ spec:
         - name: PGID
           value: "0"
         - name: MSSQL_PID
-          value: "Developer"
+          value: Developer
         - name: ACCEPT_EULA
           value: "Y"
         - name: SA_PASSWORD
@@ -38,7 +38,7 @@ spec:
               key: SA_PASSWORD 
         volumeMounts:
         - name: mssqldb
-          mountPath: /var/opt/mssql
+          mountPath: /var/opt/data
       volumes:
       - name: mssqldb
         persistentVolumeClaim:
@@ -48,7 +48,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: mssql-deployment
+  name: mssql
   namespace: skynamo
 spec:
   selector:
@@ -58,29 +58,30 @@ spec:
     port: 1433
     targetPort: 1433
 
-# ---
-# kind: Ingress
-# apiVersion: networking.k8s.io/v1 
-# metadata:
-#   # annotations:
-#   #   kubernetes.io/ingress.class: nginx
-#   #   nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
-#   #   nginx.ingress.kubernetes.io/proxy-read-timeout: "15"      
-#   name: sonarr
-#   namespace: media
-# spec:
-#   rules:
-#     - host: sonarr.steenkamps.org
-#       http:
-#         paths:
-#           - pathType: Prefix
-#             path: /              
-#             backend:
-#               service:
-#                 name: sonarr
-#                 port: 
-#                   number: 8989
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1 
+metadata:
+  # annotations:
+  #   kubernetes.io/ingress.class: nginx
+  #   nginx.ingress.kubernetes.io/proxy-connect-timeout: "15"
+  #   nginx.ingress.kubernetes.io/proxy-read-timeout: "15"      
+  name: mssql
+  namespace: skynamo
+spec:
+  rules:
+    - host: mssql.steenkamps.org
+      http:
+        paths:
+          - pathType: Prefix
+            path: /              
+            backend:
+              service:
+                name: mssql
+                port: 
+                  number: 1433
 
+---
 # mssql.persistentvolume
 apiVersion: v1
 kind: PersistentVolume

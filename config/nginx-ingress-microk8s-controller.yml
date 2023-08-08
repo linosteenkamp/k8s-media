@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-ingress-microk8s-controller
+  namespace: ingress
+  labels:
+    microk8s-application: nginx-ingress-microk8s
+spec:
+  selector:
+    matchLabels:
+      name: nginx-ingress-microk8s
+  template:
+    metadata:
+      labels:
+        name: nginx-ingress-microk8s
+    spec:
+      terminationGracePeriodSeconds: 60
+      # hostPort doesn't work with CNI, so we have to use hostNetwork instead
+      # see https://github.com/kubernetes/kubernetes/issues/23920
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      serviceAccountName: nginx-ingress-microk8s-serviceaccount
+      containers:
+      - image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:$TAG
+        name: nginx-ingress-microk8s
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 10254
+            scheme: HTTP
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        # use downward API
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        - name: proxied-tcp-1433
+          containerPort: 1433
+          hostPort: 1433
+          protocol: TCP        
+        - name: proxied-tcp-5432
+          containerPort: 5432
+          hostPort: 5432
+          protocol: TCP        
+        - name: proxied-tcp-6379
+          containerPort: 6379
+          hostPort: 6379
+          protocol: TCP        
+        - name: proxied-tcp-15672
+          containerPort: 15672
+          hostPort: 15672
+          protocol: TCP        
+        args:
+        - /nginx-ingress-controller
+        - --configmap=$(POD_NAMESPACE)/nginx-load-balancer-microk8s-conf
+        - --tcp-services-configmap=$(POD_NAMESPACE)/nginx-ingress-tcp-microk8s-conf
+        - --udp-services-configmap=$(POD_NAMESPACE)/nginx-ingress-udp-microk8s-conf
+        $DEFAULT_CERT
+        $EXTRA_ARGS

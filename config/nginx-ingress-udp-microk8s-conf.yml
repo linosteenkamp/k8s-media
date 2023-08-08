@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-ingress-udp-microk8s-conf
+  namespace: ingress
+data:
+  6379: "skynamo/redis:6379"
+  5432: "skynamo/postgres:5432"
+  1433: "skynamo/mssql:1433"
+  15672: "skynamo/rabbitmq:15672"
